@@ -4,13 +4,17 @@ import XCTest
 import WorkoutDecoders
 
 final class WorkoutDecodersTests: XCTestCase {
-    func testDecodesSegments() {
 
+    private func decodedWorkout(from filename: String = "workout1") -> Workout {
         let decoder = WorkoutDecoder(userFtp: 200)
-        let file = Bundle.module.url(forResource: "workout1", withExtension: "zwo",
+        let file = Bundle.module.url(forResource: filename, withExtension: "zwo",
                                         subdirectory: "Resources")!
         let data = try! Data(contentsOf: file)
-        let workout = try! decoder.decodeWorkout(from: file, data: data)
+        return try! decoder.decodeWorkout(from: file, data: data)
+    }
+
+    func testDecodesSegments() {
+        let workout = decodedWorkout()
 
         XCTAssertEqual(workout.segments, [
             WorkoutSegment(duration: 10, index: 0, intervalIndex: nil, powerStart: 0.5, powerEnd: 0.55),
@@ -29,7 +33,20 @@ final class WorkoutDecodersTests: XCTestCase {
         ])
     }
 
+    func testDecodesMessages() {
+        let workout = decodedWorkout()
+
+        XCTAssertEqual(workout.messages, [
+            WorkoutMessage(timeOffset: 0, message: "Starting message"),
+            WorkoutMessage(timeOffset: 120, message: "Should be at offset 120"),
+            WorkoutMessage(timeOffset: 125, message: "Start interval message"),
+            WorkoutMessage(timeOffset: 175, message: "Near end interval message"),
+            WorkoutMessage(timeOffset: 187, message: "Last segment message")
+        ])
+    }
+
     static var allTests = [
         ("testDecodesSegments", testDecodesSegments),
+        ("testDecodesMessages", testDecodesMessages)
     ]
 }

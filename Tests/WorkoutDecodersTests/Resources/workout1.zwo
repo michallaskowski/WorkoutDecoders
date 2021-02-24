@@ -11,9 +11,14 @@
 		<SteadyState Duration="5" Power="0.4"/>
         <FreeRide Duration="100"/>
 		<SteadyState Duration="10" Power="0.5">
-            <textevent timeoffset="5" message="Should be at offset 30"/>
+            <textevent timeoffset="5" message="Should be at offset 120"/>
         </SteadyState>
-		<IntervalsT Repeat="3" OnDuration="15" OnPower="1.2" OffDuration="5" OffPower="0.4"/>
-        <SteadyState Duration="5" Power="0.6"/>
+		<IntervalsT Repeat="3" OnDuration="15" OnPower="1.2" OffDuration="5" OffPower="0.4">
+            <textevent timeoffset="0" message="Start interval message"/>
+            <textevent timeoffset="50" message="Near end interval message"/>
+        </IntervalsT>
+        <SteadyState Duration="5" Power="0.6">
+            <textevent timeoffset="2" message="Last segment message"/>
+        </SteadyState>
 	</workout>
 </workout_file>

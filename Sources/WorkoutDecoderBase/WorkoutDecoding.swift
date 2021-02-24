@@ -58,7 +58,7 @@ public struct WorkoutSegment: Codable, Equatable {
     }
 }
 
-public struct WorkoutMessage: Codable {
+public struct WorkoutMessage: Codable, Equatable {
     public let timeOffset: Int
     public let message: String
 
