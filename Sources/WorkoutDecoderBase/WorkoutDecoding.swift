@@ -22,7 +22,7 @@ public enum WorkoutPart {
         case .steady(let duration, let power):
             return [WorkoutSegment(duration: duration, index: startIndex, intervalIndex: nil, powerStart: power, powerEnd: nil)]
         case .intervals(let repeats, let onDuration, let onPower, let offDuration, let offPower):
-            return (0...repeats).map { index -> [WorkoutSegment] in
+            return (0..<repeats).map { index -> [WorkoutSegment] in
                 [
                     WorkoutSegment(duration: onDuration, index: startIndex + index * 2,
                                    intervalIndex: index, powerStart: onPower, powerEnd: nil),
@@ -40,7 +40,7 @@ public enum WorkoutPart {
     }
 }
 
-public struct WorkoutSegment: Codable {
+public struct WorkoutSegment: Codable, Equatable {
     public let duration: Int
     public let index: Int
     public let intervalIndex: Int?

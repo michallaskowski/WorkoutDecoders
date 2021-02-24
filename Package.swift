@@ -41,6 +41,9 @@ let package = Package(
             dependencies: ["ZwoWorkoutDecoder", "FitWorkoutDecoder"]),
         .testTarget(
             name: "WorkoutDecodersTests",
-            dependencies: ["WorkoutDecoders"]),
+            dependencies: ["WorkoutDecoders"],
+            resources: [
+                .copy("Resources")
+            ]),
     ]
 )

@@ -12,7 +12,7 @@ import ZwoWorkoutDecoder
 
 public struct UnknownFileException: Error {}
 
-final class WorkoutDecoder: WorkoutDecoding {
+public final class WorkoutDecoder: WorkoutDecoding {
 
     private let userFtp: Int
     private lazy var fitDecoder: FitWorkoutDecoder = {
@@ -22,11 +22,11 @@ final class WorkoutDecoder: WorkoutDecoding {
         ZwoWorkoutDecoder()
     }()
 
-    init(userFtp: Int) {
+    public init(userFtp: Int) {
         self.userFtp = userFtp
     }
 
-    func decodeWorkout(from url: URL, data: Data) throws -> Workout {
+    public func decodeWorkout(from url: URL, data: Data) throws -> Workout {
         switch url.pathExtension {
         case "zwo":
             return try zwoDecoder.decodeWorkout(from: url, data: data)
