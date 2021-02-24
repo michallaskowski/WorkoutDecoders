@@ -9,6 +9,7 @@
            <textevent timeoffset="0" message="Starting message"/>
         </Warmup>
 		<SteadyState Duration="5" Power="0.4"/>
+        <FreeRide Duration="100"/>
 		<SteadyState Duration="10" Power="0.5">
             <textevent timeoffset="5" message="Should be at offset 30"/>
         </SteadyState>
