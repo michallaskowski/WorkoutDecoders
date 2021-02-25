@@ -8,7 +8,8 @@
 import Foundation
 
 public protocol WorkoutDecoding {
-    func decodeWorkout(from url: URL, data: Data) throws -> Workout
+    var supportedFileFormats: [String] { get }
+    func decodeWorkout(data: Data) throws -> Workout
 }
 
 public enum WorkoutPart {

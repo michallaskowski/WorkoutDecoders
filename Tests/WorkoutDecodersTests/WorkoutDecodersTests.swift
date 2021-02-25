@@ -10,7 +10,7 @@ final class WorkoutDecodersTests: XCTestCase {
         let file = Bundle.module.url(forResource: filename, withExtension: "zwo",
                                         subdirectory: "Resources")!
         let data = try! Data(contentsOf: file)
-        return try! decoder.decodeWorkout(from: file, data: data)
+        return try! decoder.decodeWorkout(fileFormat: "zwo", data: data)
     }
 
     func testDecodesSegments() {

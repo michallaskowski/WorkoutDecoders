@@ -27,7 +27,7 @@ let decoder = WorkoutDecoder(userFtp: 200)
 let file = Bundle.module.url(forResource: "workout", withExtension: "fit")!
 do {
   let data = try Data(contentsOf: file)
-  let workout = try decoder.decodeWorkout(from: file, data: data)
+  let workout = try decoder.decodeWorkout(fileFormat: "fit", data: data)
   // use workout
 } catch {
   // handle decoding errors

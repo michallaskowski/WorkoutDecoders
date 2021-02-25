@@ -10,9 +10,11 @@ import WorkoutDecoderBase
 import SwiftyXMLParser
 
 public final class ZwoWorkoutDecoder: WorkoutDecoding {
+    public let supportedFileFormats: [String] = ["zwo"]
+
     public init() {}
 
-    public func decodeWorkout(from url: URL, data: Data) throws -> Workout {
+    public func decodeWorkout(data: Data) throws -> Workout {
         let xml = XML.parse(data)
         let workout = xml["workout_file"]
         let name: String = workout["name"].text ?? "no_name"

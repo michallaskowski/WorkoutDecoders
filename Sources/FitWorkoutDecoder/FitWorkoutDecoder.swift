@@ -20,12 +20,14 @@ private struct RepeatSteps {
 }
 
 public final class FitWorkoutDecoder: WorkoutDecoding {
+    public let supportedFileFormats: [String] = ["fit"]
+
     private let userFtp: Int
     public init(userFtp: Int) {
         self.userFtp = userFtp
     }
 
-    public func decodeWorkout(from url: URL, data: Data) throws -> Workout {
+    public func decodeWorkout(data: Data) throws -> Workout {
         let file = FitFile(data: data)
 
         let workoutMessages = file.messages(forMessageType: .workout)
