@@ -36,6 +36,8 @@ do {
 
 ## Roadmap
 
+1. Need to add a test for FIT file decoding. Will need to find a file that I can publish, or find a tool to create one.
+
 For an app I am developing, ZWO and FIT file support is enough. MRC, ERG or other file support could be added if needed, but preferably by providing a PR :)  
 Workout model could be extended if there is also a need for that.
 
