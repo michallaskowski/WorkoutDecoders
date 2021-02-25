@@ -3,10 +3,16 @@
 ## About the project
 
 A common interface for (currently) two decoders:
+
 * zwo files (xml format)
 * fit files (binary format)
 
 that allow to create a common model of a workout. See `Sources/WorkoutDecoderBase/WorkoutDecoding.swift` for model definitions.
+
+Models are easy to use:
+
+* intervals are flattened
+* messages' time offset are normalized with respect to the beginning of the training
 
 ### Built with
 
@@ -37,6 +43,7 @@ do {
 ## Roadmap
 
 1. Need to add a test for FIT file decoding. Will need to find a file that I can publish, or find a tool to create one.
+2. Potential support for FIT notes as messages.
 
 For an app I am developing, ZWO and FIT file support is enough. MRC, ERG or other file support could be added if needed, but preferably by providing a PR :)  
 Workout model could be extended if there is also a need for that.
