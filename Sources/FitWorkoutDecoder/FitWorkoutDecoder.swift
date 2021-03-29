@@ -61,13 +61,15 @@ public final class FitWorkoutDecoder: WorkoutDecoding {
             switch stepsDistance {
             case 0:
                 let workoutStep = workoutSteps[repeatStep.range.lowerBound]
-                return WorkoutPart.steady(duration: workoutStep.duration, power: workoutStep.power(for: userFtp))
+                return WorkoutPart.steady(duration: workoutStep.duration, power: workoutStep.power(for: userFtp),
+                                          cadence: nil)
             case 1:
                 let firstWorkoutStep = workoutSteps[repeatStep.range.lowerBound]
                 let secondWorkoutStep = workoutSteps[repeatStep.range.upperBound]
                 return WorkoutPart.intervals(repeat: repeatStep.repeatCount,
                                              onDuration: firstWorkoutStep.duration, onPower: firstWorkoutStep.power(for: userFtp),
-                                             offDuration: secondWorkoutStep.duration, offPower: secondWorkoutStep.power(for: userFtp))
+                                             offDuration: secondWorkoutStep.duration, offPower: secondWorkoutStep.power(for: userFtp),
+                                             cadence: nil)
             default:
                 throw FitDecodeError.notSupportedRange
             }

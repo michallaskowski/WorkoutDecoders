@@ -20,22 +20,27 @@ public final class ZwoWorkoutDecoder: WorkoutDecoding {
         let name: String = workout["name"].text ?? "no_name"
         let parts = try workout["workout"].element?.childElements.map { part -> WorkoutPart in
             let attributes = part.attributes
+            let cadence = attributes["Cadence"]
             switch part.name {
             case "SteadyState":
                 return WorkoutPart.steady(duration: attributes.int("Duration"),
-                                          power: Double(attributes["Power"]!)!)
+                                          power: attributes.double("Power"),
+                                          cadence: cadence)
             case "IntervalsT":
                 return WorkoutPart.intervals(repeat: attributes.int("Repeat"),
                                              onDuration: attributes.int("OnDuration"),
-                                             onPower: Double(attributes["OnPower"]!)!,
+                                             onPower: attributes.double("OnPower"),
                                              offDuration: attributes.int("OffDuration"),
-                                             offPower: Double(attributes["OffPower"]!)!)
+                                             offPower: attributes.double("OffPower"),
+                                             cadence: cadence)
             case "Warmup", "Cooldown", "Ramp":
                 return WorkoutPart.ramp(duration: attributes.int("Duration"),
-                                        powerLow: Double(attributes["PowerLow"]!)!,
-                                        powerHigh: Double(attributes["PowerHigh"]!)!)
+                                        powerLow: attributes.double("PowerLow"),
+                                        powerHigh: attributes.double("PowerHigh"),
+                                        cadence: cadence)
             case "FreeRide":
-                return WorkoutPart.freeRide(duration: attributes.int("Duration"))
+                return WorkoutPart.freeRide(duration: attributes.int("Duration"),
+                                            cadence: cadence)
             default:
                 throw WorkoutDecodeError.unknownElement(name: part.name)
             }
@@ -85,6 +90,12 @@ private extension Dictionary where Value == String {
     func int(_ key: Key, fallback: Int = 0) -> Int {
         return self[key].flatMap {
             Int($0)
+        } ?? fallback
+    }
+
+    func double(_ key: Key, fallback: Double = 0.0) -> Double {
+        return self[key].flatMap {
+            Double($0)
         } ?? fallback
     }
 }

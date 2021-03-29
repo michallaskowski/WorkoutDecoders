@@ -8,8 +8,8 @@
         <Warmup Duration="10" PowerLow="0.5" PowerHigh="0.55">
            <textevent timeoffset="0" message="Starting message"/>
         </Warmup>
-		<SteadyState Duration="5" Power="0.4"/>
-        <FreeRide Duration="100"/>
+		<SteadyState Duration="5" Power="0.4" Cadence="100"/>
+        <FreeRide Duration="100" Cadence="90"/>
 		<SteadyState Duration="10" Power="0.5">
             <textevent timeoffset="5" message="Should be at offset 120"/>
         </SteadyState>

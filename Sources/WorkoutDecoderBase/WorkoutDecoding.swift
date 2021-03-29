@@ -13,30 +13,32 @@ public protocol WorkoutDecoding {
 }
 
 public enum WorkoutPart {
-    case steady(duration: Int, power: Double)
-    case intervals(repeat: Int, onDuration: Int, onPower: Double, offDuration: Int, offPower: Double)
-    case ramp(duration: Int, powerLow: Double, powerHigh: Double)
-    case freeRide(duration: Int)
+    case steady(duration: Int, power: Double, cadence: String?)
+    case intervals(repeat: Int, onDuration: Int, onPower: Double, offDuration: Int, offPower: Double, cadence: String?)
+    case ramp(duration: Int, powerLow: Double, powerHigh: Double, cadence: String?)
+    case freeRide(duration: Int, cadence: String?)
 
     public func toSegments(startIndex: Int) -> [WorkoutSegment] {
         switch self {
-        case .steady(let duration, let power):
-            return [WorkoutSegment(duration: duration, index: startIndex, intervalIndex: nil, powerStart: power, powerEnd: nil)]
-        case .intervals(let repeats, let onDuration, let onPower, let offDuration, let offPower):
+        case .steady(let duration, let power, let cadence):
+            return [WorkoutSegment(duration: duration, index: startIndex, intervalIndex: nil,
+                                   powerStart: power, powerEnd: nil, cadence: cadence)]
+        case .intervals(let repeats, let onDuration, let onPower, let offDuration, let offPower, let cadence):
             return (0..<repeats).map { index -> [WorkoutSegment] in
                 [
                     WorkoutSegment(duration: onDuration, index: startIndex + index * 2,
-                                   intervalIndex: index, powerStart: onPower, powerEnd: nil),
+                                   intervalIndex: index, powerStart: onPower, powerEnd: nil, cadence: cadence),
                     WorkoutSegment(duration: offDuration, index: startIndex + index * 2 + 1,
-                                   intervalIndex: index, powerStart: offPower, powerEnd: nil),
+                                   intervalIndex: index, powerStart: offPower, powerEnd: nil, cadence: cadence)
                 ]
             }.flatMap { $0 }
 
-        case .ramp(let duration, let powerLow, let powerHigh):
+        case .ramp(let duration, let powerLow, let powerHigh, let cadence):
             return [WorkoutSegment(duration: duration, index: startIndex,
-                                   intervalIndex: nil, powerStart: powerLow, powerEnd: powerHigh)]
-        case .freeRide(let duration):
-            return [WorkoutSegment(duration: duration, index: startIndex, intervalIndex: nil, powerStart: -1.0, powerEnd: nil)]
+                                   intervalIndex: nil, powerStart: powerLow, powerEnd: powerHigh, cadence: cadence)]
+        case .freeRide(let duration, let cadence):
+            return [WorkoutSegment(duration: duration, index: startIndex, intervalIndex: nil,
+                                   powerStart: -1.0, powerEnd: nil, cadence: cadence)]
         }
     }
 }
@@ -47,6 +49,7 @@ public struct WorkoutSegment: Codable, Equatable {
     public let intervalIndex: Int?
     public let powerStart: Double // negative power means free ride
     public let powerEnd: Double?
+    public let cadence: String?
 
     public func powerAt(second: Int, for ftp: Double) -> Int {
         let power: Double
