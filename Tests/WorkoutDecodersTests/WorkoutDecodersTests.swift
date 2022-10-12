@@ -18,7 +18,7 @@ final class WorkoutDecodersTests: XCTestCase {
 
         XCTAssertEqual(workout.segments, [
             WorkoutSegment(duration: 10, index: 0, intervalIndex: nil, powerStart: 0.5, powerEnd: 0.55, cadence: nil),
-            WorkoutSegment(duration: 5, index: 1, intervalIndex: nil, powerStart: 0.4, powerEnd: nil, cadence: "100"),
+            WorkoutSegment(duration: 5.00002, index: 1, intervalIndex: nil, powerStart: 0.4, powerEnd: nil, cadence: "100"),
             WorkoutSegment(duration: 100, index: 2, intervalIndex: nil, powerStart: -1, powerEnd: nil, cadence: "90"), // free ride
             WorkoutSegment(duration: 10, index: 3, intervalIndex: nil, powerStart: 0.5, powerEnd: nil, cadence: nil),
             // interval start, repeat 3
@@ -37,11 +37,11 @@ final class WorkoutDecodersTests: XCTestCase {
         let workout = decodedWorkout()
 
         XCTAssertEqual(workout.messages, [
-            WorkoutMessage(timeOffset: 0, message: "Starting message"),
-            WorkoutMessage(timeOffset: 120, message: "Should be at offset 120"),
-            WorkoutMessage(timeOffset: 125, message: "Start interval message"),
-            WorkoutMessage(timeOffset: 175, message: "Near end interval message"),
-            WorkoutMessage(timeOffset: 187, message: "Last segment message")
+            WorkoutMessage(timeOffset: 0.0, message: "Starting message"),
+            WorkoutMessage(timeOffset: 120.00002, message: "Should be at offset 120"),
+            WorkoutMessage(timeOffset: 125.00002, message: "Start interval message"),
+            WorkoutMessage(timeOffset: 175.00002, message: "Near end interval message"),
+            WorkoutMessage(timeOffset: 187.00002, message: "Last segment message")
         ])
     }
 
