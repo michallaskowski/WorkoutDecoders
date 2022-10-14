@@ -13,10 +13,10 @@ public protocol WorkoutDecoding {
 }
 
 public enum WorkoutPart {
-    case steady(duration: Int, power: Double, cadence: String?)
-    case intervals(repeat: Int, onDuration: Int, onPower: Double, offDuration: Int, offPower: Double, cadence: String?)
-    case ramp(duration: Int, powerLow: Double, powerHigh: Double, cadence: String?)
-    case freeRide(duration: Int, cadence: String?)
+    case steady(duration: TimeInterval, power: Double, cadence: String?)
+    case intervals(repeat: Int, onDuration: TimeInterval, onPower: Double, offDuration: TimeInterval, offPower: Double, cadence: String?)
+    case ramp(duration: TimeInterval, powerLow: Double, powerHigh: Double, cadence: String?)
+    case freeRide(duration: TimeInterval, cadence: String?)
 
     public func toSegments(startIndex: Int) -> [WorkoutSegment] {
         switch self {
@@ -44,7 +44,7 @@ public enum WorkoutPart {
 }
 
 public struct WorkoutSegment: Codable, Equatable {
-    public let duration: Int
+    public let duration: TimeInterval
     public let index: Int
     public let intervalIndex: Int?
     public let powerStart: Double // negative power means free ride
@@ -63,10 +63,10 @@ public struct WorkoutSegment: Codable, Equatable {
 }
 
 public struct WorkoutMessage: Codable, Equatable {
-    public let timeOffset: Int
+    public let timeOffset: TimeInterval
     public let message: String
 
-    public init(timeOffset: Int, message: String) {
+    public init(timeOffset: TimeInterval, message: String) {
         self.timeOffset = timeOffset
         self.message = message
     }
@@ -75,7 +75,7 @@ public struct WorkoutMessage: Codable, Equatable {
 public struct Workout: Codable {
     public let name: String
     public let segments: [WorkoutSegment]
-    public let duration: Int
+    public let duration: TimeInterval
     public let messages: [WorkoutMessage]
 
     public init(name: String, parts: [WorkoutPart], messages: [WorkoutMessage]) {

@@ -23,23 +23,23 @@ public final class ZwoWorkoutDecoder: WorkoutDecoding {
             let cadence = attributes["Cadence"]
             switch part.name {
             case "SteadyState":
-                return WorkoutPart.steady(duration: attributes.int("Duration"),
+                return WorkoutPart.steady(duration: attributes.double("Duration"),
                                           power: attributes.double("Power"),
                                           cadence: cadence)
             case "IntervalsT":
                 return WorkoutPart.intervals(repeat: attributes.int("Repeat"),
-                                             onDuration: attributes.int("OnDuration"),
+                                             onDuration: attributes.double("OnDuration"),
                                              onPower: attributes.double("OnPower"),
-                                             offDuration: attributes.int("OffDuration"),
+                                             offDuration: attributes.double("OffDuration"),
                                              offPower: attributes.double("OffPower"),
                                              cadence: cadence)
             case "Warmup", "Cooldown", "Ramp":
-                return WorkoutPart.ramp(duration: attributes.int("Duration"),
+                return WorkoutPart.ramp(duration: attributes.double("Duration"),
                                         powerLow: attributes.double("PowerLow"),
                                         powerHigh: attributes.double("PowerHigh"),
                                         cadence: cadence)
             case "FreeRide":
-                return WorkoutPart.freeRide(duration: attributes.int("Duration"),
+                return WorkoutPart.freeRide(duration: attributes.double("Duration"),
                                             cadence: cadence)
             default:
                 throw WorkoutDecodeError.unknownElement(name: part.name)
@@ -47,15 +47,15 @@ public final class ZwoWorkoutDecoder: WorkoutDecoding {
         } ?? []
 
         // each part duration and messages with time offset per WorkoutPart
-        let messages = try workout["workout"].element?.childElements.map { part -> (Int, [WorkoutMessage]) in
+        let messages = try workout["workout"].element?.childElements.map { part -> (TimeInterval, [WorkoutMessage]) in
             let attributes = part.attributes
 
-            let duration: Int
+            let duration: TimeInterval
             switch part.name {
             case "SteadyState", "Warmup", "Cooldown", "Ramp", "FreeRide":
-                duration = attributes.int("Duration")
+                duration = attributes.double("Duration")
             case "IntervalsT":
-                duration = (attributes.int("OnDuration") + attributes.int("OffDuration")) * attributes.int("Repeat")
+                duration = (attributes.double("OnDuration") + attributes.double("OffDuration")) * Double(attributes.int("Repeat"))
             default:
                 throw WorkoutDecodeError.unknownElement(name: part.name)
             }
@@ -64,7 +64,7 @@ public final class ZwoWorkoutDecoder: WorkoutDecoding {
                 $0.name == "textevent"
             }.map { message -> WorkoutMessage in
                 let attributes = message.attributes
-                return WorkoutMessage(timeOffset: attributes.int("timeoffset"), message: attributes["message"] ?? "")
+                return WorkoutMessage(timeOffset: attributes.double("timeoffset"), message: attributes["message"] ?? "")
             }
 
             return (duration, messages)
